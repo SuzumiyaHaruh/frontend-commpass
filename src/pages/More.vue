@@ -19,21 +19,10 @@
     <!--    瀑布流-->
     <div id="scroll" class="row grid"
          data-masonry='{"percentPosition": true }'>
-      <div class="grid-item grid animate__animated animate__zoomIn col-sm-6 col-lg-4 mb-4"
+      <!--      item-->
+      <div class="grid-item grid animate__animated animate__zoomIn col-sm-6 col-lg-3 mb-4"
            v-for="item in products" :key="item.id">
-        <div class="card cursor-pointer border-0 ">
-          <div class="overflow-hidden rounded position-relative">
-            <img :src="item.imageUrl" alt="" class="card-img-top rounded">
-          </div>
-          <div class="card-body">
-            <h3 class="fw-bold card-title">油画</h3>
-            <p>这是一段简介</p>
-            <div>
-              <span class="card-text h5  mr-3">$NT299</span>
-              <span class="card-text text-grey h6 line-through">$NT299</span>
-            </div>
-          </div>
-        </div>
+        <Cart :product="item"/>
       </div>
     </div>
   </main>
@@ -49,6 +38,7 @@ import Loading from "../components/Loading.vue";
 import Masonry from "masonry-layout"
 import {onMounted, onUnmounted, onUpdated, ref} from "vue";
 import {getProducts} from "../api/products.js";
+import Cart from "../components/Cart.vue";
 
 const num = ref(1)
 const products = ref([])
@@ -56,9 +46,9 @@ const totalPage = ref(1)
 const loading = ref(false)
 const show = ref(false)
 // 获取所有商品
-const getProductEvents = (page = 1) => {
+const getProductEvents = async (page = 1) => {
   loading.value = true
-  getProducts(page).then(res => {
+  await getProducts(page).then(res => {
     console.log(res.data)
     products.value = [...products.value, ...res.data.products]
     totalPage.value = res.data.pagination.total_pages

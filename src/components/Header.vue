@@ -18,7 +18,7 @@
             <li class="nav-item">
               <a class="nav-link  h3" href="./">
                 <i class="bi position-relative bi-cart ">
-                  <span class="shop-cart-tab translate-middle badge text-white bg-danger">3</span>
+                  <span class=" shop-cart-tab translate-middle badge text-white bg-danger">{{productNum}}</span>
                 </i>
               </a>
             </li>
@@ -30,12 +30,14 @@
 </template>
 
 <script setup>
-import {computed, ref} from "vue";
+import {computed, onMounted, onUpdated, ref} from "vue";
 import {useStore} from "vuex";
 
 const store = useStore()
 
 const active = computed(() => store.state.active)
+const productNum = computed(()=>store.state.cart.getProductNum)
+// const carts = computed(() => store.state.carts)
 const activeClick = (index) => {
   store.commit('getActive', index)
   console.log(store.state.active)
@@ -54,6 +56,9 @@ const navs = ref([
     title: '关于'
   }
 ])
+onMounted(()=>{
+  store.dispatch('getCartEvent')
+})
 </script>
 
 <style scoped>

@@ -3,7 +3,7 @@
     <nav aria-label="breadcrumb ">
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
-          <router-link to="/">Home</router-link>
+          <router-link to="/">首页</router-link>
         </li>
         <li class="breadcrumb-item" v-for="(item,index) in state.list" :key="index">
           <a v-if="index===state.list.length-1">{{ item.meta.title }}</a>

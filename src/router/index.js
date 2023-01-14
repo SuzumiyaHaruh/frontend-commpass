@@ -2,6 +2,7 @@ import {createRouter, createWebHistory} from "vue-router"
 import Home from '../pages/Home.vue'
 import About from '../pages/About.vue'
 import More from '../pages/More.vue'
+import Detail from "../pages/Detail.vue";
 
 const routes = [
     {
@@ -30,8 +31,16 @@ const routes = [
         component: More,
         meta: {          //主要是meta里面得带标题数据
             title: '全部'
-        }
+        },
     },
+    {
+        path: "/detail/:id",
+        name: "detail",
+        component: Detail,
+        meta: {          //主要是meta里面得带标题数据
+            title: '详情'
+        },
+    }
 ]
 const router = createRouter({
     history: createWebHistory(),

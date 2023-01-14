@@ -8,10 +8,10 @@
           . 版权所有.
         </div>
         <div>
-          <div class="contact  border m-2 d-inline-block rounded px-3 py-1 ">博客</div>
-          <div class="contact border m-2 d-inline-block rounded px-3 py-1 ">github</div>
-          <div class="contact border m-2 d-inline-block rounded px-3 py-1 ">邮箱</div>
-          <div class="contact border m-2 d-inline-block rounded px-3 py-1 ">控制台</div>
+          <a href="#" class="contact  border m-2 d-inline-block rounded px-3 py-1 ">博客</a>
+          <a href="#" class="contact border m-2 d-inline-block rounded px-3 py-1 ">github</a>
+          <a href="#" class="contact border m-2 d-inline-block rounded px-3 py-1 ">邮箱</a>
+          <a href="http://suzumiya.iuo.ink/" class="contact border m-2 d-inline-block rounded px-3 py-1 ">控制台</a>
         </div>
         <div>
           作者:<span  class="text-secondary font-weight-bold"> by Haruhi Suzumiya</span> 此网站为个人展示，非首页使用

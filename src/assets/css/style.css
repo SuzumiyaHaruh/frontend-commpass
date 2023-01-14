@@ -58,7 +58,10 @@
     cursor: pointer;
 }
 .contact:hover{
-    color: white;
+    color: #ffffff;
+    text-decoration: none;
+}
+.contact:hover{
     background: #7832e2;
 }
 .btn{
@@ -72,6 +75,15 @@
 }
 .-top-1{
     margin-top: -50px;
+}
+.text-overflow-1{
+    text-overflow: -o-ellipsis-lastline;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
 }
 /*------------------------------------------------------------------------------------
 / 14. Preloader
