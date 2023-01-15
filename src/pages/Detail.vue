@@ -49,17 +49,16 @@
             <select class="form-control w-120  mr-3 " v-model="productDetail.num">
               <option :value="num" v-for="num in 5" :key="num">选购{{ num }}本</option>
             </select>
-            <div  @click="addCartEvent(productDetail.id,productDetail.num)" class="btn btn-dark">加入购物车</div>
+            <div @click="addCartEvent(productDetail.id,productDetail.num)" class="btn btn-dark">加入购物车</div>
           </div>
         </div>
       </div>
       <div>
-        <h5 class="font-weight-bold spanborder"><span>介绍</span></h5>
-        <p>{{ productDetail.description }}</p>
-      </div>
-      <div>
-        <h5 class="font-weight-bold spanborder"><span>说明</span></h5>
-        <p>{{ productDetail.content }}</p>
+        <h5 class="font-weight-bold spanborder">
+          <span @click="showIdt =1" class="text-grey" :class="{'active':showIdt===1,'border-0':showIdt===2}">介绍</span>
+          <span @click="showIdt =2" class="text-grey ml-3" :class="{'text-dark':showIdt===2,'border-0':showIdt===1}">说明</span></h5>
+        <p v-if="showIdt===1">{{ productDetail.description }}</p>
+        <p v-else>{{ productDetail.content }}</p>
       </div>
     </section>
   </main>
@@ -80,6 +79,7 @@ const store = new useStore()
 const route = useRoute()
 const loading = ref(false)
 const productDetail = ref({})
+const showIdt = ref(1)
 const id = ref('')
 //获取订单详情
 const getProductEvent = async (id) => {
@@ -278,5 +278,9 @@ hr {
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.3);
+}
+.spanborder>.active{
+  font-weight: bold;
+  color: black;
 }
 </style>

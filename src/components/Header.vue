@@ -16,9 +16,9 @@
               </router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link  h3" href="./">
+              <a class="nav-link   h3" href="./">
                 <i class="bi position-relative bi-cart ">
-                  <span class=" shop-cart-tab translate-middle badge text-white bg-danger">{{productNum}}</span>
+                  <span class=" shop-cart-tab translate-middle badge text-white bg-danger">{{ productNum }}</span>
                 </i>
               </a>
             </li>
@@ -27,6 +27,8 @@
       </div>
     </nav>
   </header>
+
+  <!--  侧边栏-->
 </template>
 
 <script setup>
@@ -36,7 +38,7 @@ import {useStore} from "vuex";
 const store = useStore()
 
 const active = computed(() => store.state.active)
-const productNum = computed(()=>store.state.cart.getProductNum)
+const productNum = computed(() => store.state.cart.getProductNum)
 // const carts = computed(() => store.state.carts)
 const activeClick = (index) => {
   store.commit('getActive', index)
@@ -56,7 +58,7 @@ const navs = ref([
     title: '关于'
   }
 ])
-onMounted(()=>{
+onMounted(() => {
   store.dispatch('getCartEvent')
 })
 </script>
