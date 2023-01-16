@@ -3,7 +3,7 @@ import Home from '../pages/Home.vue'
 import About from '../pages/About.vue'
 import More from '../pages/More.vue'
 import Detail from "../pages/Detail.vue";
-
+import Cart from "../pages/Cart.vue"
 const routes = [
     {
         path: "/:catchAll(.*)",
@@ -39,6 +39,14 @@ const routes = [
         component: Detail,
         meta: {          //主要是meta里面得带标题数据
             title: '详情'
+        },
+    },
+    {
+        path: "/cart",
+        name: "cart",
+        component: Cart,
+        meta: {          //主要是meta里面得带标题数据
+            title: '购物车'
         },
     }
 ]

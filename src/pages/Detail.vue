@@ -42,8 +42,8 @@
           <div class="badge badge-danger mb-3">{{ productDetail.category }}</div>
           <h6>作者：{{ productDetail.unit }}</h6>
           <div class="mb-2">
-            <span class="card-text h6  mr-3">$NT{{ productDetail.origin_price }}</span>
-            <span class="card-text text-grey h7 line-through">$NT{{ productDetail.price }}</span>
+            <span class="card-text h6  mr-3">{{ productDetail.origin_price }}元</span>
+            <span class="card-text text-grey h7 line-through">{{ productDetail.price }}元</span>
           </div>
           <div class="d-flex">
             <select class="form-control w-120  mr-3 " v-model="productDetail.num">
@@ -54,7 +54,7 @@
         </div>
       </div>
       <div>
-        <h5 class="font-weight-bold spanborder">
+        <h5 class="font-weight-bold cursor-pointer spanborder">
           <span @click="showIdt =1" class="text-grey" :class="{'active':showIdt===1,'border-0':showIdt===2}">介绍</span>
           <span @click="showIdt =2" class="text-grey ml-3" :class="{'text-dark':showIdt===2,'border-0':showIdt===1}">说明</span></h5>
         <p v-if="showIdt===1">{{ productDetail.description }}</p>

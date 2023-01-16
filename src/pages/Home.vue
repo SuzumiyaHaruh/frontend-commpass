@@ -108,6 +108,21 @@
         </div>
       </div>
     </section>
+    <section class="container">
+      <vue3-seamless-scroll
+          :step="0.5"
+          direction="left"
+          :list="listData"
+          :class-option="classOption"
+          class="warp"
+      >
+        <div class="item-list">
+          <div class="item" v-for="(item, index) in listData" :key="index">
+            {{ item }}
+          </div>
+        </div>
+      </vue3-seamless-scroll>
+    </section>
   </main>
   <!--  footer-->
   <Footer/>
@@ -117,17 +132,22 @@
 import Header from "../components/Header.vue";
 import Footer from "../components/Footer.vue";
 import Loading from "../components/Loading.vue";
-import {getProductsAll} from "../api/products.js";
-import {onMounted, ref} from "vue";
+import {getProducts} from "../api/products.js";
+import {onMounted, reactive, ref} from "vue";
+import {Vue3SeamlessScroll} from "vue3-seamless-scroll";
 
 const loading = ref(false)
 const products = ref([])
+const classOption = {
+  limitMoveNum: 2,
+  direction: 3,
+}
+const listData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
 const getProductEvents = async () => {
   loading.value = true
-  await getProductsAll().then(res => {
+  await getProducts(1).then(res => {
     products.value = res.data.products.splice(0, 6)
     loading.value = false
-    console.log(products)
   })
 }
 onMounted(() => {
@@ -135,7 +155,7 @@ onMounted(() => {
 })
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .img {
   border: none;
   background-size: cover;
@@ -159,5 +179,42 @@ onMounted(() => {
 
 .rounded-0 {
   border-radius: 0;
+}
+
+.scroll {
+  /*margin: 100px auto;*/
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.scroll .item {
+  /*display: flex;*/
+  /*align-items: center;*/
+  /*justify-content: space-between;*/
+  /*padding: 3px 0;*/
+}
+.warp {
+  //width: 130px * 4;
+  height: 120px;
+  margin: 0 auto;
+  overflow: hidden;
+  .item-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    &.item-list {
+      display: flex;
+      .item {
+        width: 120px;
+        height: 120px;
+        margin-right: 10px;
+        line-height: 120px;
+        background-color: #999;
+        color: #fff;
+        text-align: center;
+        font-size: 30px;
+      }
+    }
+  }
 }
 </style>

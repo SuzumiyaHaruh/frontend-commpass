@@ -12,7 +12,14 @@ export const cart = {
     },
     mutations: {
         getCarts(state, carts) {
-            state.cart = carts
+            state.carts = carts
+            // console.log(state.cart)
+        },
+        getFinalTotal(state, final_total) {
+            state.final_total = final_total
+        },
+        getTotal(state, total) {
+            state.total = total
         },
         getProductNum(state, carts) {
             let sum = 0
@@ -28,6 +35,8 @@ export const cart = {
         async getCartEvent({commit}) {
             await getCart().then(res => {
                 let carts = res.data.data.carts
+                commit('getFinalTotal', res.data.data.final_total)
+                commit('getTotal', res.data.data.total)
                 commit('getCarts', carts)
                 commit('getProductNum', carts)
                 // console.log(res.data.data)

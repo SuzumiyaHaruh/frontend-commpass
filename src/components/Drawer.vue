@@ -1,60 +1,26 @@
 <template>
-  <div class="drawer">
-    <!-- 遮罩层 -->
-    <div class="mask-show" v-if="drawerShow" @click="close()"></div>
-    <!-- 抽屉层 -->
-    <div class="setbox" :class="{show: drawerShow}">
-      <div class="header">
-        <p class="fl">即时聊天</p>
-        <button class="off" @click="close()">关闭</button>
-      </div>
+  <div class="offcanvas offcanvas-end" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions"
+       aria-labelledby="offcanvasWithBothOptionsLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasWithBothOptionsLabel">{{ title }}</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <slot/>
     </div>
   </div>
 </template>
-
 <script setup>
-const drawerShow = true
+defineProps({
+  title: {
+    type: String,
+    default: '标题'
+  }
+})
 </script>
 
-<style lang="scss" scoped>
-.drawer {
-  // height: 500px;
-  width: 100%;
-  display: flex;
-  display: -webkit-flex;
-  flex-direction: column;
-  /* 遮罩 */
-  .mask-show {
-    position: fixed;
-    z-index: 100;
-    top: 0px;
-    bottom: 0px;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-
-  .setbox {
-    position: fixed;
-    z-index: 1100;
-    top: 0px;
-    bottom: 0px;
-    width: 30%;
-    height: 100%;
-    background: #FFFFFF;
-    border-left: 1px solid #CFD8DC !important;
-    box-shadow: 0px 3px 12px rgba(0, 0, 0, 0.12);
-    -webkit-transition: all 1s ease;
-    transition: all 1s ease;
-    // 动画（定位从 -32% 变成 0）
-    right: -32%;
-    padding: 0px 0px 0px 20px;
-  }
-
-  /*// 动画*/
-  .show {
-    right: 0;
-  }
+<style scoped>
+.offcanvas-body::-webkit-scrollbar {
+  width: 0 !important;
 }
-
 </style>

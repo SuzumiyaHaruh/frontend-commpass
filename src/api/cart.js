@@ -10,3 +10,7 @@ export function addCart(data) {
 export function getCart() {
     return instance.get(`/cart`)
 }
+//删除购物车
+export function deleteCart(id) {
+    return instance.delete(`/cart/${id}`)
+}

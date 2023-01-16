@@ -10,17 +10,17 @@
     <!--    分类-->
     <div>
 
-      <a class="badge mr-2 text-white cursor-pointer text-grey badge-danger">全部</a>
-      <a class="badge mr-2 cursor-pointer">印象</a>
-      <a class="badge mr-2 cursor-pointer">抽象</a>
-      <a class="badge mr-2 cursor-pointer">素描</a>
+      <a @click="setCategory('',-1)" class="badge mr-2 cursor-pointer text-grey"
+         :class="{'text-white   badge-danger':showTab===-1}">全部</a>
+      <a @click="setCategory(item,index)" class="badge mr-2 cursor-pointer"
+         :class="{'text-white   badge-danger':showTab===index}" v-for="(item,index) in category"
+         :key="index">{{ item }}</a>
     </div>
     <hr class="mb-5"/>
     <!--    瀑布流-->
-    <div id="scroll" class="row grid"
-         data-masonry='{"percentPosition": true }'>
+    <div id="scroll" class="row grid">
       <!--      item-->
-      <div class="grid-item grid animate__animated animate__zoomIn col-sm-6 col-lg-3 mb-4"
+      <div class="grid-item animate__animated animate__zoomIn col-sm-6 col-lg-3 mb-4"
            v-for="item in products" :key="item.id">
         <Cart :product="item"/>
       </div>
@@ -38,22 +38,39 @@ import Loading from "../components/Loading.vue";
 import Masonry from "masonry-layout"
 import {onMounted, onUnmounted, onUpdated, ref} from "vue";
 import {getProducts} from "../api/products.js";
-import Cart from "../components/Cart.vue";
+import Cart from "../components/Card.vue";
 
-const num = ref(1)
-const products = ref([])
-const totalPage = ref(1)
-const loading = ref(false)
+const showTab = ref(-1)
+const num = ref(1) //加载计数
+const products = ref([])//商品列表
+const totalPage = ref(1)//分页
+const loading = ref(false)//loading
 const show = ref(false)
+const category = ref(['漫画','科普','文学','文化'])//分类
+const productCategory = ref([])//
+const ctyMark = ref('')
 // 获取所有商品
 const getProductEvents = async (page = 1) => {
   loading.value = true
   await getProducts(page).then(res => {
-    console.log(res.data)
+    // 获取商品列表
     products.value = [...products.value, ...res.data.products]
+    productCategory.value = products.value
+
+    //下拉加载新商品并合并
     totalPage.value = res.data.pagination.total_pages
+
     loading.value = false
   })
+}
+const setCategory = (cty, index) => {
+  showTab.value = index
+  ctyMark.value = cty
+  if (cty) {
+    products.value = productCategory.value.filter(item => item.category === cty)
+  } else {
+    products.value = productCategory.value
+  }
 }
 // 实时滚动条高度
 const onScroll = () => {
@@ -68,9 +85,12 @@ const onScroll = () => {
     num.value++
     if (num.value <= totalPage.value) {
       getProductEvents(num.value)
+      setCategory(ctyMark.value, showTab.value)
     }
   }
 }
+
+
 // 安装
 onMounted(() => {
   getProductEvents()
@@ -82,17 +102,17 @@ onUnmounted(() => {
 })
 // 更新
 onUpdated(() => {
-  let row = document.querySelector(".row")
-  // 如果图片没有加载完成会导致标签重叠
-  $(row).imagesLoaded(function () {
-    // 图片加载后执行的方法
-    // Masonry不生效的原因和解决方案
-    new Masonry(row, {
-      // options
-      percentPosition: true,
-      itemSelector: ".col-sm-6",
-    })
-  });
+    let grid = document.querySelector(".grid")
+    // 如果图片没有加载完成会导致标签重叠
+    $(grid).imagesLoaded(function () {
+      // 图片加载后执行的方法
+      // Masonry不生效的原因和解决方案
+      new Masonry(grid, {
+        // options
+        percentPosition: true,
+        itemSelector: ".grid-item",
+      })
+    });
 })
 </script>
 

@@ -1,19 +1,18 @@
 <template>
   <div class="container mt-5">
     <footer class="bg-white border-top p-3 text-muted small">
-      <div class="row align-items-center justify-content-between">
-        <div>
+      <div class="row align-items-center">
+        <div class="col-md-4">
           <span class="navbar-brand mr-2"><strong>COMPASS</strong></span> Copyright &copy;
           <span>{{ date.year }}</span>
           . 版权所有.
         </div>
-        <div>
+        <div class="col-md-4">
           <a href="#" class="contact  border m-2 d-inline-block rounded px-3 py-1 ">博客</a>
           <a href="#" class="contact border m-2 d-inline-block rounded px-3 py-1 ">github</a>
-          <a href="#" class="contact border m-2 d-inline-block rounded px-3 py-1 ">邮箱</a>
           <a href="http://suzumiya.iuo.ink/" class="contact border m-2 d-inline-block rounded px-3 py-1 ">控制台</a>
         </div>
-        <div>
+        <div class="col-md-4">
           作者:<span  class="text-secondary font-weight-bold"> by Haruhi Suzumiya</span> 此网站为个人展示，非首页使用
         </div>
       </div>
@@ -28,6 +27,5 @@ let date = {
 }
 </script>
 
-<style scoped>
-
+<style>
 </style>

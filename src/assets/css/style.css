@@ -1,12 +1,12 @@
 .shop-cart-tab{
     position: absolute;
-    top: 2px;
+    top: 10px;
     display: inline-block;
-    right: -5px;
-    padding: 3px 6px;
+    right: -20px;
+    /*padding: 3px 6px;*/
     line-height: 12px;
     font-weight: 700;
-    border-radius: 45%;
+    border-radius: 40%;
     font-size: 12px;
 }
 .bd-placeholder-img {
