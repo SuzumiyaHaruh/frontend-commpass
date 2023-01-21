@@ -1,21 +1,24 @@
 <template>
   <header>
-    <nav class="topnav navbar  navbar-expand-lg navbar-light bg-white fixed-top">
+    <nav class="topnav navbar  navbar-expand-lg  bg-dark opacity-75 fixed-top">
       <div class="container ">
-        <router-link to="/" class="navbar-brand"><strong>COMPASS</strong></router-link>
-        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarColor02"
-                aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+        <router-link to="/" class="navbar-brand text-white align-items-center">
+          <img v-if="!showLogo" height="25" class="mb-1" src="../assets/img/Bird.png" alt="">
+          <img v-if="showLogo" height="25" class="mb-1" src="../assets/img/Bird2.png" alt="">
+          <strong style="font-family: 'Noto Serif SC'">鸟语书斋</strong></router-link>
+        <button @click="showToggler=!showToggler" class="navbar-toggler" type="button">
+          <i class="bi text-white fw-bold bi-filter-left"></i>
         </button>
-        <div class="navbar-collapse collapse" id="navbarColor02" style="">
-          <ul class="navbar-nav  ml-auto d-flex align-items-center">
-            <li @click="activeClick(index)" :class="{'active':active===index}" class="nav-item"
+        <div class="navbar-collapse animate__animated animate__fadeInDown" :class="{'collapse':showToggler}"
+             id="navbarColor02" style="">
+          <ul class="navbar-nav   ml-auto d-flex align-items-center">
+            <li @click="activeClick(index)" :class="{'active-1':active===index}" class="nav-item "
                 v-for="(item,index) in navs" :key="index">
-              <router-link :to="item.path" class="nav-link">
+              <router-link :to="item.path" class="nav-link text-white">
                 {{ item.title }} <span class="sr-only">(current)</span>
               </router-link>
             </li>
-            <li @click="getCartEvent" class="nav-item" data-bs-toggle="offcanvas"
+            <li @click="toCart" class="nav-item cursor-pointer text-white" data-bs-toggle="offcanvas"
                 data-bs-target="#offcanvasWithBothOptions"
                 aria-controls="offcanvasWithBothOptions">
               <a class="nav-link   h3">
@@ -29,50 +32,19 @@
       </div>
     </nav>
   </header>
-
-  <!--  侧边栏-->
-  <Drawer title="购物车">
-    <div class="card mb-3 border-0 shadow-sm" v-for="(item,index) in carts" :key="index">
-      <div class="row align-items-center">
-        <div class="col-4">
-          <img :src="item.product?.imageUrl" class="img-fluid rounded-start" alt="">
-        </div>
-        <div class="col-6">
-          <div class="card-body">
-            <h6 class="card-title">{{ item.product?.title }}</h6>
-            <small class="d-block text-muted ">总价：{{
-                String(item.final_total).replace(/^(.*\..{2}).*$/, "$1")
-              }}元</small>
-            <small class="d-block text-muted">数量：{{ item.qty }}</small>
-          </div>
-        </div>
-        <div class="col-2">
-          <i @click="deleteCartEvent(item.id)" class="bi bi-trash"></i>
-        </div>
-      </div>
-    </div>
-    <div style="height: 100px"></div>
-    <div class="cart-bottom py-3 w-100">
-      <div class="d-flex ">
-        <h5 v-if="total!==final_total" class="border-bottom text-decoration-line-through mr-3 py-3">
-          总价：{{ String(total).replace(/^(.*\..{2}).*$/, "$1") }}元</h5>
-        <h5 v-else class="border-bottom mr-3 py-3">总价：{{ String(total).replace(/^(.*\..{2}).*$/, "$1") }}元</h5>
-        <h5 v-if="final_total!==total" class="border-bottom text-success py-3">
-          优惠价：{{ String(final_total).replace(/^(.*\..{2}).*$/, "$1") }}元</h5>
-      </div>
-      <div data-bs-dismiss="offcanvas" aria-label="Close" @click="toCart" class="btn-dark btn">查看购物车</div>
-    </div>
-  </Drawer>
 </template>
 
 <script setup>
 import {computed, onMounted, onUpdated, ref} from "vue";
 import {useStore} from "vuex";
 import Drawer from "./Drawer.vue";
-import {useRouter} from "vue-router";
+import {useRoute, useRouter} from "vue-router";
 import {deleteCart} from "../api/cart.js";
 
+const showLogo = ref(false)
+const showToggler = ref(true)
 const router = useRouter()
+const route = useRoute()
 const store = useStore()
 const total = computed(() => store.state.cart.total)
 const final_total = computed(() => store.state.cart.final_total)
@@ -108,6 +80,47 @@ const toCart = () => {
 }
 onMounted(() => {
   store.dispatch('getCartEvent')
+  if (route.path === '/cart'||route.path === '/order'||route.path.indexOf('order_complete')) {
+    $(".navbar").addClass("bg-white");
+    $(".navbar").addClass("bg-white");
+    $(".navbar-brand").removeClass("text-white");
+    $(".navbar").removeClass("opacity-75");
+    $(".nav-link").removeClass("text-white");
+    $(".nav-item").removeClass("text-white");
+  }
+  $().ready(function () {
+    $(window).scroll(function () {
+      let scrollTop = $(window).scrollTop();//获取当前滑动的位置
+      if (route.path === '/cart'||route.path === '/order'||route.path.indexOf('order_complete')) {
+        $(".navbar").addClass("bg-white");
+        $(".navbar").addClass("bg-white");
+        $(".navbar-brand").removeClass("text-white");
+        $(".navbar").removeClass("opacity-75");
+        $(".nav-link").removeClass("text-white");
+        $(".nav-item").removeClass("text-white");
+      }
+      else if (scrollTop > 69.75) {
+        showLogo.value = true
+        $(".navbar").addClass("bg-white");
+        $(".navbar").addClass("bg-white");
+        $(".navbar-brand").removeClass("text-white");
+        $(".navbar").removeClass("opacity-75");
+        $(".nav-link").removeClass("text-white");
+        $(".nav-item").removeClass("text-white");
+        $(".bi-filter-left").removeClass("text-white");
+
+      } else {
+        showLogo.value = false
+        $(".navbar").removeClass("bg-white");
+        $(".navbar").addClass("opacity-75");
+        $(".nav-item").addClass("text-white");
+        $(".nav-link").addClass("text-white");
+        $(".navbar-brand").addClass("text-white");
+        $(".bi-filter-left").addClass("text-white");
+      }
+      // }
+    })
+  })
 })
 </script>
 
@@ -117,5 +130,13 @@ onMounted(() => {
   z-index: 90000;
   background: white;
   bottom: 0;
+}
+
+.active-1 {
+  font-weight: bold;
+}
+
+.fw-bold {
+  font-weight: bold;
 }
 </style>

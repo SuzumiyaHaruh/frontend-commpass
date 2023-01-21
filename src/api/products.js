@@ -10,7 +10,10 @@ export function getProductsAll() {
 export function getProducts(page) {
     return instance.get(`/products/?page=${page}`)
 }
+
 // 获取单一商品详情
 export function getProduct(id) {
     return instance.get(`/product/${id}`)
 }
+
+

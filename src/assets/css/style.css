@@ -260,4 +260,14 @@
         transform: scale(1)
     }
 }
+.bg-section-secondary
+{
+    background-color: #fafbfe !important;
+}
+.img-center
+{
+    display: block;
 
+    margin-right: auto;
+    margin-left: auto;
+}

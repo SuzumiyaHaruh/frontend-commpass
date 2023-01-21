@@ -2310,9 +2310,9 @@ pre code {
 .form-control:focus {
     color: #495057;
     background-color: #fff;
-    border-color: #2ffbc5;
+    /*border-color: #6c5ce7;*/
     outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(3, 168, 124, 0.25);
+    /*box-shadow: 0 0 0 0.2rem rgba(3, 168, 124, 0.25);*/
 }
 
 .form-control::-webkit-input-placeholder {
@@ -5636,14 +5636,14 @@ input[type="button"].btn-block {
     padding: 0.75rem 1rem;
     margin-left: -1px;
     line-height: 1.25;
-    color: #03a87c;
+    color: #7832e2;
     background-color: #fff;
     border: 1px solid #dee2e6;
 }
 
 .page-link:hover {
     z-index: 2;
-    color: #025d45;
+    color: #7832e2;
     text-decoration: none;
     background-color: #e9ecef;
     border-color: #dee2e6;
@@ -5652,7 +5652,7 @@ input[type="button"].btn-block {
 .page-link:focus {
     z-index: 2;
     outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(3, 168, 124, 0.25);
+    box-shadow: 0 0 0 0.2rem rgba(12, 50, 226, 0.25);
 }
 
 .page-link:not(:disabled):not(.disabled) {
@@ -5673,8 +5673,8 @@ input[type="button"].btn-block {
 .page-item.active .page-link {
     z-index: 1;
     color: #fff;
-    background-color: #03a87c;
-    border-color: #03a87c;
+    background-color: #7832e2;
+    border-color: #7832e2;
 }
 
 .page-item.disabled .page-link {
@@ -5682,7 +5682,7 @@ input[type="button"].btn-block {
     pointer-events: none;
     cursor: auto;
     background-color: #fff;
-    border-color: #dee2e6;
+    border-color: #7832e2;
 }
 
 .pagination-lg .page-link {
@@ -12894,7 +12894,7 @@ html {
 /* Base Styles -------------------- */
 body {
     overflow-x: hidden;
-    padding-top: 69.75px;
+    /*padding-top: 69.75px;*/
 }
 
 .sticky-top {

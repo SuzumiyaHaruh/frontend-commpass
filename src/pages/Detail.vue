@@ -2,21 +2,12 @@
   <Loading v-if="loading"/>
   <!--  头部-->
   <Header/>
+  <!--    面包屑-->
+  <Breadcrumb>
+    <router-link class="h2 text-decoration-none fw-bold text-white" to="/more">全部&nbsp|&nbsp</router-link>
+  </Breadcrumb>
   <main class="container py-5">
     <!-- 面包屑-->
-    <div class="my-3">
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item">
-            <router-link to="/">首页</router-link>
-          </li>
-          <li class="breadcrumb-item">
-            <router-link to="/more">全部</router-link>
-          </li>
-          <li class="breadcrumb-item active" aria-current="page">详情</li>
-        </ol>
-      </nav>
-    </div>
     <hr/>
     <!--    内容-->
     <section class="container mt-4 mb-5 animate__animated animate__zoomIn animate__delay-1s">
@@ -39,48 +30,85 @@
         </div>
         <div class="col-md-6 pb-6 align-self-center">
           <h1 class="mb-3 font-weight-bold">{{ productDetail.title }}</h1>
-          <div class="badge badge-danger mb-3">{{ productDetail.category }}</div>
-          <h6>作者：{{ productDetail.unit }}</h6>
           <div class="mb-2">
-            <span class="card-text h6  mr-3">{{ productDetail.origin_price }}元</span>
-            <span class="card-text text-grey h7 line-through">{{ productDetail.price }}元</span>
+            <span class="card-text fw-bold h4 line-through mr-3">￥{{ productDetail.origin_price }}</span>
+            <span class="card-text fw-bold text-secondary h4 ">￥{{ productDetail.price }}</span>
           </div>
-          <div class="d-flex">
-            <select class="form-control w-120  mr-3 " v-model="productDetail.num">
+          <div class="badge badge-danger mb-3">{{ productDetail.category }}</div>
+          <p class="fs-7 text-grey-bright">{{ productDetail.description }}</p>
+          <h6>作者：{{ productDetail.unit }}</h6>
+
+          <div class="d-flex mt-md-4">
+            <select class="form-control w-120  mr-3 " v-model="productNum">
               <option :value="num" v-for="num in 5" :key="num">选购{{ num }}本</option>
             </select>
-            <div @click="addCartEvent(productDetail.id,productDetail.num)" class="btn btn-dark">加入购物车</div>
+            <div @click="addCartEvent(productDetail.id,productNum)" class="btn btn-secondary">加入购物车</div>
+          </div>
+          <div class="d-flex mt-4 align-items-center">
+            <i class="bi mr-4 fs-3 bi-twitter"></i>
+            <i class="bi mr-4 fs-3  bi-instagram"></i>
+            <i class="bi mr-4 fs-3 bi-facebook"></i>
           </div>
         </div>
       </div>
-      <div>
-        <h5 class="font-weight-bold cursor-pointer spanborder">
-          <span @click="showIdt =1" class="text-grey" :class="{'active':showIdt===1,'border-0':showIdt===2}">介绍</span>
-          <span @click="showIdt =2" class="text-grey ml-3" :class="{'text-dark':showIdt===2,'border-0':showIdt===1}">说明</span></h5>
-        <p v-if="showIdt===1">{{ productDetail.description }}</p>
-        <p v-else>{{ productDetail.content }}</p>
+      <div class="mt-md-5">
+<!--        <h5 class="font-weight-bold cursor-pointer spanborder">-->
+<!--          <span @click="showIdt =1" class="text-grey" :class="{'active':showIdt===1,'border-0':showIdt===2}">介绍</span>-->
+<!--          <span @click="showIdt =2" class="text-grey ml-3"-->
+<!--                :class="{'text-dark':showIdt===2,'border-0':showIdt===1}">说明</span></h5>-->
+<!--        <p v-if="showIdt===1"></p>-->
+<!--        <p v-else>-->
+<!--        </p>-->
       </div>
     </section>
+
   </main>
+  <section class="bg-section-secondary">
+    <h4 class="text-center fw-bold py-4">---- 为你推荐 ----</h4>
+    <div class="container">
+      <div class="fw-bold py-3 cursor-pointer  text-right"><router-link class="text-secondary" to="/more"><i class="bi mr-2 bi-arrow-right-short"></i>查看更多</router-link></div>
+      <div ref="scrollRef" class="row">
+        <div class=" animate__animated  animate__fadeIn  col-lg-3 col-6 col-md-4 mb-5" v-for="item in products"
+             :key="item.id">
+          <Card :item="item"/>
+        </div>
+      </div>
+    </div>
+  </section>
+  <Discounts/>
   <Footer/>
 </template>
 
 <script setup>
 import Header from "../components/Header.vue";
 import Footer from "../components/Footer.vue";
-import {getProduct} from "../api/products.js";
+import {getProduct, getProductsAll} from "../api/products.js";
 import {onMounted, ref} from "vue";
 import {useRoute} from "vue-router";
 import Loading from "../components/Loading.vue";
 import {addCart} from "../api/cart.js";
 import {useStore} from "vuex";
-
+import Nav from "../components/Nav.vue";
+import Breadcrumb from "../components/Breadcrumb.vue";
+import {ElNotification} from 'element-plus'
+import Discounts from "../components/Discounts.vue";
+import Card from "../components/Card.vue";
+const productNum = ref(1)
 const store = new useStore()
 const route = useRoute()
 const loading = ref(false)
 const productDetail = ref({})
-const showIdt = ref(1)
+let showIdt = ref(1)
 const id = ref('')
+const idArray = ref([])
+const products=ref([])
+// 获取所有商品
+const getProductEvents = async () => {
+  await getProductsAll().then(res => {
+    // 获取商品列表
+    products.value = res.data.products.slice(0,4)
+  })
+}
 //获取订单详情
 const getProductEvent = async (id) => {
   loading.value = true
@@ -93,6 +121,12 @@ const getProductEvent = async (id) => {
 const addCartEvent = async (id, num) => {
   await addCart({data: {product_id: id, qty: num}}).then(res => {
     if (res.data.success) {
+      ElNotification({
+        title:'提示',
+        message: '加入购物车成功',
+        type: 'success',
+        duration:2000
+      })
       store.dispatch('getCartEvent')
     }
   })
@@ -100,6 +134,7 @@ const addCartEvent = async (id, num) => {
 onMounted(() => {
   id.value = route.params.id
   getProductEvent(id.value)
+  getProductEvents()
 })
 </script>
 
@@ -139,6 +174,10 @@ body {
   /*padding: 0 2em;*/
 }
 
+.fs-7 {
+  font-size: 14px;
+}
+
 .text.container {
   max-width: 38em;
   text-align: center;
@@ -146,6 +185,9 @@ body {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.75);
 }
 
+.text-grey-bright {
+  color: #898b98;
+}
 
 a {
   color: #da9803;
@@ -279,7 +321,8 @@ hr {
   height: 100%;
   background: rgba(0, 0, 0, 0.3);
 }
-.spanborder>.active{
+
+.spanborder > .active {
   font-weight: bold;
   color: black;
 }

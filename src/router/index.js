@@ -4,6 +4,8 @@ import About from '../pages/About.vue'
 import More from '../pages/More.vue'
 import Detail from "../pages/Detail.vue";
 import Cart from "../pages/Cart.vue"
+import Order from "../pages/Order.vue"
+import OrderComplete from "../pages/OrderComplete.vue"
 const routes = [
     {
         path: "/:catchAll(.*)",
@@ -47,6 +49,22 @@ const routes = [
         component: Cart,
         meta: {          //主要是meta里面得带标题数据
             title: '购物车'
+        },
+    },
+    {
+        path: "/order",
+        name: "order",
+        component: Order,
+        meta: {          //主要是meta里面得带标题数据
+            title: '订单'
+        },
+    },
+    {
+        path: "/order_complete/:id",
+        name: "order_complete",
+        component: OrderComplete,
+        meta: {          //主要是meta里面得带标题数据
+            title: '结账'
         },
     }
 ]
