@@ -7,7 +7,7 @@
           <img v-if="showLogo" height="25" class="mb-1" src="../assets/img/Bird2.png" alt="">
           <strong style="font-family: 'Noto Serif SC'">鸟语书斋</strong></router-link>
         <button @click="showToggler=!showToggler" class="navbar-toggler" type="button">
-          <i class="bi text-white fw-bold bi-filter-left"></i>
+          <i class="bi text-white  fw-bold bi-filter-left"></i>
         </button>
         <div class="navbar-collapse animate__animated animate__fadeInDown" :class="{'collapse':showToggler}"
              id="navbarColor02" style="">
@@ -35,7 +35,7 @@
 </template>
 
 <script setup>
-import {computed, onMounted, onUpdated, ref} from "vue";
+import {computed, onMounted, onUnmounted, onUpdated, ref} from "vue";
 import {useStore} from "vuex";
 import Drawer from "./Drawer.vue";
 import {useRoute, useRouter} from "vue-router";
@@ -78,49 +78,95 @@ const navs = ref([
 const toCart = () => {
   router.push('/cart')
 }
-onMounted(() => {
-  store.dispatch('getCartEvent')
-  if (route.path === '/cart'||route.path === '/order'||route.path.indexOf('order_complete')) {
+//防抖
+const debounce = (fn, delay) => {
+  let timer = null; //借助闭包
+  return function () {
+    if (timer) {
+      clearTimeout(timer);
+    }
+    timer = setTimeout(fn, delay); // 简化写法
+  };
+}
+const handleScroll = () => {
+  let scrollTop = document.documentElement.scrollTop
+
+   if (scrollTop > 69.75&&route.path==='/') {
+    showLogo.value = true
     $(".navbar").addClass("bg-white");
     $(".navbar").addClass("bg-white");
     $(".navbar-brand").removeClass("text-white");
     $(".navbar").removeClass("opacity-75");
     $(".nav-link").removeClass("text-white");
     $(".nav-item").removeClass("text-white");
+    $(".bi-filter-left").removeClass("text-white");
+  } else if (scrollTop===0&&route.path==='/') {
+    showLogo.value = false
+    $(".navbar").addClass("opacity-75");
+    $(".nav-item").addClass("text-white");
+    $(".nav-link").addClass("text-white");
+    $(".navbar-brand").addClass("text-white");
+    $(".bi-filter-left").addClass("text-white");
+    $(".navbar").removeClass("bg-white");
   }
-  $().ready(function () {
-    $(window).scroll(function () {
-      let scrollTop = $(window).scrollTop();//获取当前滑动的位置
-      if (route.path === '/cart'||route.path === '/order'||route.path.indexOf('order_complete')) {
-        $(".navbar").addClass("bg-white");
-        $(".navbar").addClass("bg-white");
-        $(".navbar-brand").removeClass("text-white");
-        $(".navbar").removeClass("opacity-75");
-        $(".nav-link").removeClass("text-white");
-        $(".nav-item").removeClass("text-white");
-      }
-      else if (scrollTop > 69.75) {
-        showLogo.value = true
-        $(".navbar").addClass("bg-white");
-        $(".navbar").addClass("bg-white");
-        $(".navbar-brand").removeClass("text-white");
-        $(".navbar").removeClass("opacity-75");
-        $(".nav-link").removeClass("text-white");
-        $(".nav-item").removeClass("text-white");
-        $(".bi-filter-left").removeClass("text-white");
-
-      } else {
-        showLogo.value = false
-        $(".navbar").removeClass("bg-white");
-        $(".navbar").addClass("opacity-75");
-        $(".nav-item").addClass("text-white");
-        $(".nav-link").addClass("text-white");
-        $(".navbar-brand").addClass("text-white");
-        $(".bi-filter-left").addClass("text-white");
-      }
-      // }
-    })
-  })
+}
+onMounted(() => {
+  store.dispatch('getCartEvent')
+  if (route.path!=='/'&&route.path!=='/more') {
+    showLogo.value = true
+    $(".navbar").addClass("bg-white");
+    $(".navbar").addClass("bg-white");
+    $(".navbar-brand").removeClass("text-white");
+    $(".navbar").removeClass("opacity-75");
+    $(".nav-link").removeClass("text-white");
+    $(".nav-item").removeClass("text-white");
+    $(".bi-filter-left").removeClass("text-white");
+  }
+  window.addEventListener('scroll', handleScroll,)
+  // if (route.path !== '/'&&route.path !== '/more') {
+  //   $(".navbar").addClass("bg-white");
+  //   $(".navbar").addClass("bg-white");
+  //   $(".navbar-brand").removeClass("text-white");
+  //   $(".navbar").removeClass("opacity-75");
+  //   $(".nav-link").removeClass("text-white");
+  //   $(".nav-item").removeClass("text-white");
+  // }
+  // $().ready(function () {
+  //   $(window).scroll(function () {
+  //     let scrollTop = $(window).scrollTop();//获取当前滑动的位置
+  //     // if (route.path !== '/'&&route.path !== '/more') {
+  //     //   $(".navbar").addClass("bg-white");
+  //     //   $(".navbar").addClass("bg-white");
+  //     //   $(".navbar-brand").removeClass("text-white");
+  //     //   $(".navbar").removeClass("opacity-75");
+  //     //   $(".nav-link").removeClass("text-white");
+  //     //   $(".nav-item").removeClass("text-white");
+  //     // }
+  //    if (scrollTop > 69.75) {
+  //       showLogo.value = true
+  //       $(".navbar").addClass("bg-white");
+  //       $(".navbar").addClass("bg-white");
+  //       $(".navbar-brand").removeClass("text-white");
+  //       $(".navbar").removeClass("opacity-75");
+  //       $(".nav-link").removeClass("text-white");
+  //       $(".nav-item").removeClass("text-white");
+  //       $(".bi-filter-left").removeClass("text-white");
+  //     }
+  //     else {
+  //       showLogo.value = false
+  //       $(".navbar").removeClass("bg-white");
+  //       $(".navbar").addClass("opacity-75");
+  //       $(".nav-item").addClass("text-white");
+  //       $(".nav-link").addClass("text-white");
+  //       $(".navbar-brand").addClass("text-white");
+  //       $(".bi-filter-left").addClass("text-white");
+  //     }
+  //     // }
+  //   })
+  // })
+})
+onUnmounted(() => {
+  window.removeEventListener("scroll", handleScroll)
 })
 </script>
 

@@ -31,16 +31,20 @@
             <td class="text-muted">￥{{ String(item.final_total).replace(/^(.*\..{2}).*$/, "$1") }}</td>
             <td>
               <div style="width: 50px" class=" input-group">
-                <input
-                    v-model="item.qty"
-                    @change="updateCartEvent(item.id, item.qty)"
-                    min="1"
-                    type="number"
-                    class="form-control px-2"
-                    placeholder="數量"
-                    aria-label="Username"
-                    aria-describedby="basic-addon1"
-                />
+<!--                <input-->
+<!--                    v-model="item.qty"-->
+<!--                    oninput="value=value.replace(/\D|^0/g, '')"-->
+<!--                    @change="updateCartEvent(item.id, item.qty)"-->
+<!--                    min="1"-->
+<!--                    type="number"-->
+<!--                    class="form-control px-2"-->
+<!--                    placeholder="數量"-->
+<!--                    aria-label="Username"-->
+<!--                    aria-describedby="basic-addon1"-->
+<!--                />-->
+                <select @change="updateCartEvent(item.id, item.qty)" class="form-control " v-model="item.qty">
+                  <option   :value="num" v-for="num in 5" :key="num">{{ num }}</option>
+                </select>
               </div>
             </td>
             <td>
@@ -133,7 +137,7 @@ import {ElNotification} from "element-plus";
 import Discounts from "../components/Discounts.vue";
 import StepBar from "../components/StepBar.vue";
 import Nav from "../components/Nav.vue";
-
+const productNum = ref(1)
 const coupon_code = ref('')//优惠券
 const final_total = computed(() => store.state.cart.final_total)//最终价格
 const total = computed(() => store.state.cart.total)//原价
@@ -163,12 +167,23 @@ const deleteCartEvent = (id) => {
 //更新购物车
 const updateCartEvent = (id, qty) => {
   loading.value = true
-  updateCart(id, {data: {product_id: id, qty: qty}}).then(res => {
-    if (res.data.success) {
-      store.dispatch('getCartEvent')
+    if (qty===''){
+      loading.value = false
+      ElNotification({
+        title: '提示',
+        message: '商品数量不能为空',
+        type: 'error',
+        duration: 2000,
+      })
     }
-    loading.value = false
-  })
+    else {
+      updateCart(id, {data: {product_id: id, qty: qty}}).then(res => {
+        if (res.data.success) {
+          store.dispatch('getCartEvent')
+        }
+        loading.value = false
+      })
+    }
 }
 const addCouponCode = () => {
   loading.value = true

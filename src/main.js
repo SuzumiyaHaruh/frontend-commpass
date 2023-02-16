@@ -1,7 +1,7 @@
 import {createApp} from 'vue'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
-import './assets/js/vendor/jquery.min.js'
+// import './assets/js/vendor/jquery.min.js'
 import 'bootstrap'
 import 'bootstrap/scss/bootstrap.scss'
 import './assets/css/main.css'

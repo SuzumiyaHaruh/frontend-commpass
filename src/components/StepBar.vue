@@ -21,17 +21,17 @@ import {useRouter} from "vue-router";
 
 const active = ref(0)
 const router = useRouter()
-watch(() => router.currentRoute.value.path, (toPath) => {
-  if (toPath === "/more") {
+watch(() => router.currentRoute.value.path, (newValue,oldValue) => {
+  console.log(newValue)
+  if (newValue === "/cart") {
     active.value = 0
   }
-  console.log(toPath)
-  if (toPath === "/order") {
+  if (newValue === "/order") {
     active.value = 1
   }
-  else {
-    active.value = 2
-  }
+  if (newValue !=='/cart'&& newValue !=='/order') {
+     active.value = 2
+   }
 }, {immediate: true, deep: true})
 </script>
 
